@@ -1,3 +1,5 @@
 com\mycompany\apicasad\CasadomoResource.class
 com\mycompany\apicasad\ApplicationConfig.class
+com\mycompany\apicasad\Cortina.class
+com\mycompany\apicasad\ConexionUnica.class
 com\mycompany\apicasad\Usuario.class

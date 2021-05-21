@@ -45,7 +45,7 @@ public class CasadomoResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Usuario postUsuario(Usuario nuevo) {
         try {
-            PreparedStatement st = ConexionUnica.getInstance().getConnection().prepareStatement("INSERT INTO usuarios (usuario, contrasena) VALUES (?, ?)");
+            PreparedStatement st = ConexionUnica.getInstance().getConnection().prepareStatement("INSERT INTO usuario (usuario, contrasena) VALUES (?, ?)");
             st.setString(1, nuevo.getUsuario());
             st.setString(2, nuevo.getContrasena());
             st.executeUpdate();
@@ -62,7 +62,7 @@ public class CasadomoResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Usuario getUsuario(Usuario user) {
         try {
-            PreparedStatement st = ConexionUnica.getInstance().getConnection().prepareStatement("SELECT * FROM usuarios WHERE usuario = ? AND contrasena = ?");
+            PreparedStatement st = ConexionUnica.getInstance().getConnection().prepareStatement("SELECT * FROM usuario WHERE usuario = ? AND contrasena = ?");
             st.setString(1, user.getUsuario());
             st.setString(2, user.getContrasena());
             ResultSet rs = st.executeQuery();
@@ -77,7 +77,7 @@ public class CasadomoResource {
             return null;
         }
     }
-
+/*
     @POST
     @Path("newcortina")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -157,11 +157,12 @@ public class CasadomoResource {
     }
 
     @GET
+    @Path("cortinas")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Cortina> getEmpleados() {
+    public List<Cortina> getCotinas() {
         try {
             List<Cortina> arrayCor = new ArrayList<>();
-            PreparedStatement st = ConexionUnica.getInstance().getConnection().prepareStatement("SELECT * FROM Empleados");
+            PreparedStatement st = ConexionUnica.getInstance().getConnection().prepareStatement("SELECT * FROM Cortina");
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Cortina cor = new Cortina();
@@ -180,5 +181,5 @@ public class CasadomoResource {
             return null;
         }
     }
-
+*/
 }
