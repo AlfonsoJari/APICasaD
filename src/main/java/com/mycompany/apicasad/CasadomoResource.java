@@ -77,18 +77,19 @@ public class CasadomoResource {
             return null;
         }
     }
-/*
+
     @POST
-    @Path("newcortina")
+    @Path("newdispositivo")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Cortina postCortina(Cortina nuevo) {
+    public Dispositivo postDispositivo(Dispositivo nuevo) {
         try {
-            PreparedStatement st = ConexionUnica.getInstance().getConnection().prepareStatement("INSERT INTO cortinas (id, nombre, estado, descripcion, repetir) VALUES (?, ?, ?, ?, ?)");
+            PreparedStatement st = ConexionUnica.getInstance().getConnection().prepareStatement("INSERT INTO dispositivo (id_dispositivo, nombre, estado, descripcion, tipo, usuario) VALUES (?, ?, ?, ?, ?, ?)");
             st.setLong(1, Long.parseLong(nuevo.getId()));
             st.setString(2, nuevo.getNombre());
             st.setString(3, nuevo.getEstado());
             st.setString(4, nuevo.getDescripcion());
-            st.setString(5, nuevo.getRepetir());
+            st.setString(5, nuevo.getTipo());
+            st.setString(6, nuevo.getUsuario());
             st.executeUpdate();
             st.close();
             return nuevo;
@@ -99,11 +100,11 @@ public class CasadomoResource {
     }
 
     @DELETE
-    @Path("deletecortina")
+    @Path("deletedispositivo")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void deleteCortina(@QueryParam("id") String id) {
+    public void deleteDispositivo(@QueryParam("id") String id) {
         try {
-            PreparedStatement st = ConexionUnica.getInstance().getConnection().prepareStatement("DELETE FROM cortinas WHERE id = ?");
+            PreparedStatement st = ConexionUnica.getInstance().getConnection().prepareStatement("DELETE FROM dispositivo WHERE id_dispositivo = ?");
             st.setLong(1, Long.parseLong(id));
             st.executeUpdate();
             st.close();
@@ -113,16 +114,13 @@ public class CasadomoResource {
     }
 
     @PUT
-    @Path("updatecortina")
+    @Path("cambioestado")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Cortina putCortina(Cortina actualizado) {
+    public Dispositivo putEstado(Dispositivo actualizado) {
         try {
-            PreparedStatement st = ConexionUnica.getInstance().getConnection().prepareStatement("UPDATE cortinas SET nombre = ?, estado = ?, descripcion = ? WHERE id = ?");
-            st.setString(1, actualizado.getNombre());
-            st.setString(2, actualizado.getEstado());
-            st.setString(3, actualizado.getDescripcion());
-            st.setString(4, actualizado.getRepetir());
-            st.setLong(5, Long.parseLong(actualizado.getId()));
+            PreparedStatement st = ConexionUnica.getInstance().getConnection().prepareStatement("UPDATE dispositivo SET estado = ? WHERE id_dispositivo = ?");
+            st.setString(1, actualizado.getEstado());
+            st.setLong(2, Long.parseLong(actualizado.getId()));
             st.executeUpdate();
             st.close();
             return actualizado;
@@ -133,23 +131,24 @@ public class CasadomoResource {
     }
 
     @GET
-    @Path("searchcortina")
+    @Path("consultarestado")
     @Produces(MediaType.APPLICATION_JSON)
-    public Cortina getCortina(@QueryParam("id") String id) {
+    public String getEstado(@QueryParam("id") String id) {
         try {
-            Cortina cor = new Cortina();
-            PreparedStatement st = ConexionUnica.getInstance().getConnection().prepareStatement("SELECT * FROM Cortina WHERE id = ?");
+            //Dispositivo cor = new Dispositivo();
+            PreparedStatement st = ConexionUnica.getInstance().getConnection().prepareStatement("SELECT * FROM dispositivo WHERE id_dispositivo = ?");
             st.setLong(1, Long.parseLong(id));
             ResultSet rs = st.executeQuery();
             rs.next();
-            cor.setId(rs.getString("id"));
-            cor.setNombre(rs.getString("nombre"));
-            cor.setEstado(rs.getString("estado"));
-            cor.setDescripcion(rs.getString("descripcion"));
-            cor.setRepetir(rs.getString("repetir"));
+            //cor.setId(rs.getString("id"));
+            //cor.setNombre(rs.getString("nombre"));
+            //cor.setEstado(rs.getString("estado"));
+            //cor.setDescripcion(rs.getString("descripcion"));
+            //cor.setRepetir(rs.getString("repetir"));
+            String estado = rs.getString("estado");
             rs.close();
             st.close();
-            return cor;
+            return estado;
         } catch (SQLException ex) {
             Logger.getLogger(CasadomoResource.class.getName()).log(Level.SEVERE, null, ex);
             return null;
@@ -157,29 +156,118 @@ public class CasadomoResource {
     }
 
     @GET
-    @Path("cortinas")
+    @Path("dispositivos")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Cortina> getCotinas() {
+    public List<Dispositivo> getDispositivos() {
         try {
-            List<Cortina> arrayCor = new ArrayList<>();
-            PreparedStatement st = ConexionUnica.getInstance().getConnection().prepareStatement("SELECT * FROM Cortina");
+            List<Dispositivo> arrayDisp = new ArrayList<>();
+            PreparedStatement st = ConexionUnica.getInstance().getConnection().prepareStatement("SELECT * FROM dispositivo");
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                Cortina cor = new Cortina();
-                cor.setId(rs.getString("id"));
-                cor.setNombre(rs.getString("nombre"));
-                cor.setEstado(rs.getString("estado"));
-                cor.setDescripcion(rs.getString("descripcion"));
-                cor.setRepetir(rs.getString("repetir"));
-                arrayCor.add(cor);
+                Dispositivo disp = new Dispositivo();
+                disp.setId(rs.getString("id"));
+                disp.setNombre(rs.getString("nombre"));
+                disp.setEstado(rs.getString("estado"));
+                disp.setDescripcion(rs.getString("descripcion"));
+                disp.setTipo(rs.getString("tipo"));
+                disp.setUsuario(rs.getString("usuario"));
+                arrayDisp.add(disp);
             }
             rs.close();
             st.close();
-            return arrayCor;
+            return arrayDisp;
         } catch (SQLException ex) {
             Logger.getLogger(CasadomoResource.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
     }
-*/
+    
+    @POST
+    @Path("newalarma")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Alarma postAlarma(Alarma nuevo) {
+        try {
+            PreparedStatement st = ConexionUnica.getInstance().getConnection().prepareStatement("INSERT INTO alarma (id_alarma, nombre, estado, hora_inicio, hora_fin, descripcion, fecha_inicio, fecha_fin, id_dispositivo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            st.setLong(1, Long.parseLong(nuevo.getId_alarma()));
+            st.setString(2, nuevo.getNombre());
+            st.setString(3, nuevo.getEstado());
+            st.setString(4, nuevo.getHora_inicio());
+            st.setString(5, nuevo.getHora_fin());
+            st.setString(6, nuevo.getDescripcion());
+            st.setString(7, nuevo.getFecha_inicio());
+            st.setString(8, nuevo.getFecha_fin());
+            st.setString(9, nuevo.getId_dispositivo());
+            st.executeUpdate();
+            st.close();
+            return nuevo;
+        } catch (SQLException ex) {
+            Logger.getLogger(CasadomoResource.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+    @DELETE
+    @Path("deletealarma")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void deleteAlarma(@QueryParam("id") String id) {
+        try {
+            PreparedStatement st = ConexionUnica.getInstance().getConnection().prepareStatement("DELETE FROM alarma WHERE id_alarma = ?");
+            st.setLong(1, Long.parseLong(id));
+            st.executeUpdate();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(CasadomoResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @PUT
+    @Path("cambioalarma")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Alarma putAlarma(Alarma actualizado) {
+        try {
+            PreparedStatement st = ConexionUnica.getInstance().getConnection().prepareStatement("UPDATE alarma SET hora_inicio = ?, hora_fin = ?, fecha_inicio = ?, fecha_fin = ? WHERE id_dispositivo = ?");
+            st.setString(1, actualizado.getHora_inicio());
+            st.setString(2, actualizado.getHora_fin());
+            st.setString(3, actualizado.getFecha_inicio());
+            st.setString(4, actualizado.getFecha_fin());
+            st.setLong(5, Long.parseLong(actualizado.getId_alarma()));
+            st.executeUpdate();
+            st.close();
+            return actualizado;
+        } catch (SQLException ex) {
+            Logger.getLogger(CasadomoResource.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+    @GET
+    @Path("alarmas")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Alarma> getDispositivos(@QueryParam("usuario") String usuario) {
+        try {
+            List<Alarma> arrayAlarma = new ArrayList<>();
+            PreparedStatement st = ConexionUnica.getInstance().getConnection().prepareStatement("SELECT * FROM dispositivo");
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Alarma alarma = new Alarma();
+                alarma.setId_alarma(rs.getString("id_alarma"));
+                alarma.setNombre(rs.getString("nombre"));
+                alarma.setEstado(rs.getString("estado"));
+                alarma.setHora_inicio(rs.getString("hora_inicio"));
+                alarma.setHora_fin(rs.getString("hora_fin"));
+                alarma.setDescripcion(rs.getString("descripcion"));
+                alarma.setFecha_inicio(rs.getString("fecha_inicio"));
+                alarma.setFecha_fin(rs.getString("fecha_fin"));
+                alarma.setId_dispositivo(rs.getString("id_dispositivo"));
+                arrayAlarma.add(alarma);
+            }
+            rs.close();
+            st.close();
+            return arrayAlarma;
+        } catch (SQLException ex) {
+            Logger.getLogger(CasadomoResource.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
 }

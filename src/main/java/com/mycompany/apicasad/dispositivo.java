@@ -1,12 +1,13 @@
 package com.mycompany.apicasad;
 
-public class Cortina {
+public class Dispositivo {
     
     private String id;
     private String nombre;
     private String estado;
     private String descripcion;
-    private String repetir;
+    private String tipo;
+    private String usuario;
 
     public String getId() {
         return id;
@@ -40,12 +41,20 @@ public class Cortina {
         this.descripcion = descripcion;
     }
 
-    public String getRepetir() {
-        return repetir;
+    public String getTipo() {
+        return tipo;
     }
 
-    public void setRepetir(String repetir) {
-        this.repetir = repetir;
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+    
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
     
 }
