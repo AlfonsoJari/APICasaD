@@ -84,7 +84,7 @@ public class CasadomoResource {
     public Dispositivo postDispositivo(Dispositivo nuevo) {
         try {
             PreparedStatement st = ConexionUnica.getInstance().getConnection().prepareStatement("INSERT INTO dispositivo (id_dispositivo, nombre, estado, descripcion, tipo, usuario) VALUES (?, ?, ?, ?, ?, ?)");
-            st.setLong(1, Long.parseLong(nuevo.getId()));
+            st.setInt(1, Integer.parseInt(nuevo.getId() ));
             st.setString(2, nuevo.getNombre());
             st.setString(3, nuevo.getEstado());
             st.setString(4, nuevo.getDescripcion());
