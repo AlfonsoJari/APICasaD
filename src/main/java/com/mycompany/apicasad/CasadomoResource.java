@@ -165,7 +165,7 @@ public class CasadomoResource {
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Dispositivo disp = new Dispositivo();
-                disp.setId(rs.getString("id"));
+                disp.setId(rs.getString("id_dispositivo"));
                 disp.setNombre(rs.getString("nombre"));
                 disp.setEstado(rs.getString("estado"));
                 disp.setDescripcion(rs.getString("descripcion"));
