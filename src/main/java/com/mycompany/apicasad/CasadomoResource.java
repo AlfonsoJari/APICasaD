@@ -105,7 +105,7 @@ public class CasadomoResource {
     public void deleteDispositivo(@QueryParam("id") String id) {
         try {
             PreparedStatement st = ConexionUnica.getInstance().getConnection().prepareStatement("DELETE FROM dispositivo WHERE id_dispositivo = ?");
-            st.setLong(1, Long.parseLong(id));
+            st.setInt(1, Integer.parseInt(id));
             st.executeUpdate();
             st.close();
         } catch (SQLException ex) {
@@ -120,7 +120,7 @@ public class CasadomoResource {
         try {
             PreparedStatement st = ConexionUnica.getInstance().getConnection().prepareStatement("UPDATE dispositivo SET estado = ? WHERE id_dispositivo = ?");
             st.setString(1, actualizado.getEstado());
-            st.setLong(2, Long.parseLong(actualizado.getId()));
+            st.setInt(2, Integer.parseInt(actualizado.getId()));
             st.executeUpdate();
             st.close();
             return actualizado;
@@ -137,7 +137,7 @@ public class CasadomoResource {
         try {
             //Dispositivo cor = new Dispositivo();
             PreparedStatement st = ConexionUnica.getInstance().getConnection().prepareStatement("SELECT * FROM dispositivo WHERE id_dispositivo = ?");
-            st.setLong(1, Long.parseLong(id));
+            st.setInt(1, Integer.parseInt(id));
             ResultSet rs = st.executeQuery();
             rs.next();
             //cor.setId(rs.getString("id"));
@@ -188,7 +188,7 @@ public class CasadomoResource {
     public Alarma postAlarma(Alarma nuevo) {
         try {
             PreparedStatement st = ConexionUnica.getInstance().getConnection().prepareStatement("INSERT INTO alarma (id_alarma, nombre, estado, hora_inicio, hora_fin, descripcion, fecha_inicio, fecha_fin, id_dispositivo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            st.setLong(1, Long.parseLong(nuevo.getId_alarma()));
+            st.setInt(1, Integer.parseInt(nuevo.getId_alarma()));
             st.setString(2, nuevo.getNombre());
             st.setString(3, nuevo.getEstado());
             st.setString(4, nuevo.getHora_inicio());
@@ -212,7 +212,7 @@ public class CasadomoResource {
     public void deleteAlarma(@QueryParam("id") String id) {
         try {
             PreparedStatement st = ConexionUnica.getInstance().getConnection().prepareStatement("DELETE FROM alarma WHERE id_alarma = ?");
-            st.setLong(1, Long.parseLong(id));
+            st.setInt(1, Integer.parseInt(id));
             st.executeUpdate();
             st.close();
         } catch (SQLException ex) {
