@@ -83,13 +83,12 @@ public class CasadomoResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Dispositivo postDispositivo(Dispositivo nuevo) {
         try {
-            PreparedStatement st = ConexionUnica.getInstance().getConnection().prepareStatement("INSERT INTO dispositivo (id_dispositivo, nombre, estado, descripcion, tipo, usuario) VALUES (?, ?, ?, ?, ?, ?)");
-            st.setInt(1, Integer.parseInt(nuevo.getId() ));
-            st.setString(2, nuevo.getNombre());
-            st.setString(3, nuevo.getEstado());
-            st.setString(4, nuevo.getDescripcion());
-            st.setString(5, nuevo.getTipo());
-            st.setString(6, nuevo.getUsuario());
+            PreparedStatement st = ConexionUnica.getInstance().getConnection().prepareStatement("INSERT INTO dispositivo (nombre, estado, descripcion, tipo, usuario) VALUES (?, ?, ?, ?, ?)");
+            st.setString(1, nuevo.getNombre());
+            st.setString(2, nuevo.getEstado());
+            st.setString(3, nuevo.getDescripcion());
+            st.setString(4, nuevo.getTipo());
+            st.setString(5, nuevo.getUsuario());
             st.executeUpdate();
             st.close();
             return nuevo;
