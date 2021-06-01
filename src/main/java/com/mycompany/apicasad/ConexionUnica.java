@@ -23,7 +23,7 @@ public class ConexionUnica {
                     Logger.getLogger(ConexionUnica.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 cu = new ConexionUnica();
-                cn = DriverManager.getConnection("jdbc:postgresql://34.71.158.192:5432/domotic", "user", "123456");
+                cn = DriverManager.getConnection("jdbc:postgresql://34.134.23.55:5432/domotic", "user", "123456");
             } catch (SQLException ex) {
                 Logger.getLogger(ConexionUnica.class.getName()).log(Level.SEVERE, null, ex);
             }
