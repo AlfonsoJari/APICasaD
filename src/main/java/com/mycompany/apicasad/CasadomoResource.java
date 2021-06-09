@@ -176,7 +176,7 @@ public class CasadomoResource {
             return null;
         }
     }
-    
+
     @GET
     @Path("focos")
     @Produces(MediaType.APPLICATION_JSON)
@@ -203,7 +203,7 @@ public class CasadomoResource {
             return null;
         }
     }
-    
+
     @GET
     @Path("cortinas")
     @Produces(MediaType.APPLICATION_JSON)
@@ -313,6 +313,106 @@ public class CasadomoResource {
             rs.close();
             st.close();
             return arrayAlarma;
+        } catch (SQLException ex) {
+            Logger.getLogger(CasadomoResource.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+    @GET
+    @Path("alarmasfocos")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Alarma> getAlarmasFocos(@QueryParam("usuario") String usuario) {
+        try {
+            List<Alarma> arrayAlarma = new ArrayList<>();
+            PreparedStatement st = ConexionUnica.getInstance().getConnection().prepareStatement("select E.* from usuario X inner join dispositivo S on S.usuario = X.usuario inner join alarma E on E.id_dispositivo = S.id_dispositivo where X.usuario = ? AND S.tipo = 'Foco'");
+            st.setString(1, usuario);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Alarma alarma = new Alarma();
+                alarma.setId_alarma(rs.getString("id_alarma"));
+                alarma.setNombre(rs.getString("nombre"));
+                alarma.setEstado(rs.getString("estado"));
+                alarma.setDescripcion(rs.getString("descripcion"));
+                alarma.setFecha_inicio(rs.getString("fecha_inicio"));
+                alarma.setFecha_fin(rs.getString("fecha_fin"));
+                alarma.setHora_inicio(rs.getString("hora_inicio"));
+                alarma.setHora_fin(rs.getString("hora_fin"));
+                alarma.setId_dispositivo(rs.getString("id_dispositivo"));
+                arrayAlarma.add(alarma);
+            }
+            rs.close();
+            st.close();
+            return arrayAlarma;
+        } catch (SQLException ex) {
+            Logger.getLogger(CasadomoResource.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+    @GET
+    @Path("alarmascortinas")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Alarma> getAlarmasCortinas(@QueryParam("usuario") String usuario) {
+        try {
+            List<Alarma> arrayAlarma = new ArrayList<>();
+            PreparedStatement st = ConexionUnica.getInstance().getConnection().prepareStatement("select E.* from usuario X inner join dispositivo S on S.usuario = X.usuario inner join alarma E on E.id_dispositivo = S.id_dispositivo where X.usuario = ? AND S.tipo = 'Cortina'");
+            st.setString(1, usuario);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Alarma alarma = new Alarma();
+                alarma.setId_alarma(rs.getString("id_alarma"));
+                alarma.setNombre(rs.getString("nombre"));
+                alarma.setEstado(rs.getString("estado"));
+                alarma.setDescripcion(rs.getString("descripcion"));
+                alarma.setFecha_inicio(rs.getString("fecha_inicio"));
+                alarma.setFecha_fin(rs.getString("fecha_fin"));
+                alarma.setHora_inicio(rs.getString("hora_inicio"));
+                alarma.setHora_fin(rs.getString("hora_fin"));
+                alarma.setId_dispositivo(rs.getString("id_dispositivo"));
+                arrayAlarma.add(alarma);
+            }
+            rs.close();
+            st.close();
+            return arrayAlarma;
+        } catch (SQLException ex) {
+            Logger.getLogger(CasadomoResource.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+    @GET
+    @Path("humedad")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Sensor getHumedad() {
+        try {
+            Sensor sensor = new Sensor();
+            PreparedStatement st = ConexionUnica.getInstance().getConnection().prepareStatement("SELECT id_sensor, valor FROM sensores WHERE tipo = 'humedad' ORDER BY id_sensor DESC LIMIT 1;");
+            ResultSet rs = st.executeQuery();
+            rs.next();
+            sensor.setValor(rs.getInt("valor"));
+            rs.close();
+            st.close();
+            return sensor;
+        } catch (SQLException ex) {
+            Logger.getLogger(CasadomoResource.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+    @GET
+    @Path("temperatura")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Sensor getTemperatura() {
+        try {
+            Sensor sensor = new Sensor();
+            PreparedStatement st = ConexionUnica.getInstance().getConnection().prepareStatement("SELECT id_sensor, valor FROM sensores WHERE tipo = 'temperatura' ORDER BY id_sensor DESC LIMIT 1;");
+            ResultSet rs = st.executeQuery();
+            rs.next();
+            sensor.setValor(rs.getInt("valor"));
+            rs.close();
+            st.close();
+            return sensor;
         } catch (SQLException ex) {
             Logger.getLogger(CasadomoResource.class.getName()).log(Level.SEVERE, null, ex);
             return null;

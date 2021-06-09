@@ -1,5 +1,6 @@
 com\mycompany\apicasad\Alarma.class
 com\mycompany\apicasad\CasadomoResource.class
+com\mycompany\apicasad\Sensor.class
 com\mycompany\apicasad\ApplicationConfig.class
 com\mycompany\apicasad\ConexionUnica.class
 com\mycompany\apicasad\Dispositivo.class
