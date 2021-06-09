@@ -291,10 +291,10 @@ public class CasadomoResource {
     @GET
     @Path("alarmas")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Alarma> getDispositivos(@QueryParam("usuario") String usuario) {
+    public List<Alarma> getAlarmas(@QueryParam("usuario") String usuario) {
         try {
             List<Alarma> arrayAlarma = new ArrayList<>();
-            PreparedStatement st = ConexionUnica.getInstance().getConnection().prepareStatement("select E.id_alarma, E.nombre, E.estado, E.descripcion, E.fecha_inicio, E.fecha_fin from usuario X inner join dispositivo S on S.usuario = X.usuario inner join alarma E on E.id_dispositivo = S.id_dispositivo where X.usuario = ?");
+            PreparedStatement st = ConexionUnica.getInstance().getConnection().prepareStatement("select E.* from usuario X inner join dispositivo S on S.usuario = X.usuario inner join alarma E on E.id_dispositivo = S.id_dispositivo where X.usuario = ?");
             st.setString(1, usuario);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
@@ -305,6 +305,9 @@ public class CasadomoResource {
                 alarma.setDescripcion(rs.getString("descripcion"));
                 alarma.setFecha_inicio(rs.getString("fecha_inicio"));
                 alarma.setFecha_fin(rs.getString("fecha_fin"));
+                alarma.setHora_inicio(rs.getString("hora_inicio"));
+                alarma.setHora_fin(rs.getString("hora_fin"));
+                alarma.setId_dispositivo(rs.getString("id_dispositivo"));
                 arrayAlarma.add(alarma);
             }
             rs.close();
